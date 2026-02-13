@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Product Analysis</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    />
+    <style>
+      .highlight {
+        color: var(--pico-color-green-500);
+        font-weight: bold;
+      }
+      .price {
+        color: var(--pico-color-blue-600);
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="container">
+      <nav>
+        <ul>
+          <li><a href="product-analysis.html">Product Analysis</a></li>
+          <li><a href="all-products-data.html">All Products Data</a></li>
+        </ul>
+      </nav>
+      <hgroup>
+        <h1>Product Analysis</h1>
+        <p>Statistical analysis for products</p>
+      </hgroup>
+    </header>
+    <main class="container">
+      <section>
+        <h2>Most Expensive Product Details</h2>
+        <div id="expensive-product"></div>
+      </section>
+      <section>
+        <h2>Totals and Averages</h2>
+        <div id="totals-averages"></div>
+      </section>
+      <section>
+        <h2>Product with Highest Rating</h2>
+        <div id="highest-rating"></div>
+      </section>
+      <section>
+        <h2>Product with Price Less Than $50</h2>
+        <div id="product-priceless"></div>
+      </section>
+    </main>
+
+    <footer class="container">
+      <small>Learning JavaScript for loops with product data analysis</small>
+    </footer>
+
+    <script>
+      const productsData = [
+        {
+          id: 101,
+          name: "Laptop",
+          price: 999.99,
+          brand: "Dell",
+          category: "Electronics",
+          rating: 4.5,
+        },
+        {
+          id: 102,
+          name: "Smartphone",
+          price: 599.99,
+          brand: "Samsung",
+          category: "Electronics",
+          rating: 4.0,
+        },
+        {
+          id: 103,
+          name: "Running Shoes",
+          price: 79.99,
+          brand: "Nike",
+          category: "FootWear",
+          rating: 4.8,
+        },
+        {
+          id: 104,
+          name: "T-shirt",
+          price: 19.99,
+          brand: "Adidas",
+          category: "Apparel",
+          rating: 4.2,
+        },
+        {
+          id: 105,
+          name: "Coffee Maker",
+          price: 49.99,
+          brand: "Hamilton",
+          category: "Kitchen Appliances",
+          rating: 4.6,
+        },
+      ];
+
+      function expensiveProduct() {
+        let product = productsData[0];
+
+        for (let i = 1; i < productsData.length; i++) {
+          if (productsData[i].price > product.price) {
+            product = productsData[i];
+          }
+        }
+        return product;
+      }
+      function displayProduct() {
+        const Product = expensiveProduct();
+
+        document.getElementById("expensive-product").innerHTML = `
+        <article>
+          <header>Most Expensive Product</header>
+          <p><strong>Name:</strong>${Product.name}</p>
+          <p><strong>Price:</strong>${Product.price}</p>
+        <p><strong>Brand:</strong>${Product.brand}</p>
+        <p><strong>Category:</strong>${Product.category}</p>
+        <footer>
+        <p><strong>Rating:</strong>${Product.rating}</p>
+        </footer>
+          </article>`;
+      }
+      function calculateTotalAverage() {
+        let TotalelectricProduct = [];
+        let Totalprice = 0;
+        let Totalrating = 0;
+
+        for (let i = 0; i < productsData.length; i++) {
+          if (productsData[i].category == "Electronics") {
+            TotalelectricProduct.push(productsData[i]);
+          }
+          Totalprice = Totalprice + productsData[i].price;
+          Totalrating = Totalrating + productsData[i].rating;
+        }
+        const Averageprice = Totalprice / productsData.length;
+        const Averagerating = Totalrating / productsData.length;
+
+        return { TotalelectricProduct, Averageprice, Averagerating };
+      }
+      function displayElectronicProduct() {
+        const electronic = calculateTotalAverage();
+        document.getElementById("totals-averages").innerHTML = `
+        <article>
+          <header>Product Statistics</header>
+          <p><strong>Total Electronics Products:</strong>${electronic.TotalelectricProduct.length}</p>
+          <p><strong> Average Price:</strong>${electronic.Averageprice}</p>
+          <footer>
+        <p><strong>Average Rating:</strong>${electronic.Averagerating}</p>
+        </footer>
+          </article>`;
+      }
+      function highestRated() {
+        let highestrating = productsData[0];
+        for (let i = 0; i < productsData.length; i++) {
+          if (productsData[i].rating > highestrating.rating) {
+            highestrating = productsData[i];
+          }
+        }
+        return highestrating;
+      }
+      function displayRating() {
+        const Rating = highestRated();
+        document.getElementById("highest-rating").innerHTML = `
+        <article>
+          <header>Highest Rated Product</header>
+          <p><strong>Name:</strong>${Rating.name}</p>
+          <p><strong>Price:</strong>${Rating.price}</p>
+        <p><strong>Brand:</strong>${Rating.brand}</p>
+        <p><strong>Category:</strong>${Rating.category}</p>
+        <footer>
+        <p><strong>Rating:</strong>${Rating.rating}</p>
+        </footer>
+          </article>`;
+      }
+      function findProduct() {
+        let budgetProducts = [];
+        for (let i = 0; i < productsData.length; i++) {
+          if (productsData[i].price < 50) {
+            budgetProducts.push(productsData[i]);
+          }
+        }
+        return budgetProducts;
+      }
+      function displayBudgetProducts() {
+        const Products = findProduct();
+        let html = "";
+        for (let i = 0; i < Products.length; i++) {
+          html += `<article>
+          <header>${Products[i].name}</header>
+          <p><strong>Price:</strong>${Products[i].price}</p>
+           <p><strong>Brand:</strong>${Products[i].brand}</p>
+          <p><strong>Category:</strong>${Products[i].category}</p>
+          <footer>
+           <p><strong>Rating:</strong>${Products[i].rating}</p>
+           </footer>
+          </article>`;
+        }
+
+        document.getElementById("product-priceless").innerHTML = html;
+      }
+      function generateProductAnalysis() {
+        displayProduct();
+        displayElectronicProduct();
+        displayRating();
+        displayBudgetProducts();
+      }
+      document.addEventListener("DOMContentLoaded", generateProductAnalysis);
+    </script>
+  </body>
+</html>
